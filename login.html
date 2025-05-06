@@ -358,62 +358,33 @@
             try {
                 const result = await signInWithPopup(auth, provider);
                 showMessage('Signed in successfully!');
-                setTimeout(() => window.location.href = '/use.html', 1000);
+                setTimeout(() => window.location.href = '/user profile.html', 1000);
             } catch (error) {
                 showError(error.message.replace('Firebase: ', ''));
             }
         });
 
         // Form Submission
-        document.querySelector('.auth-form').addEventListener('submit', async (e) => {
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const isSignUp = document.querySelector('.toggle-option.active').textContent === 'Sign Up';
+            
+            // Get form values
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password')?.value;
-
-            if (isSignUp) {
-                if (password !== confirmPassword) return showError('Passwords do not match');
-                if (password.length < 6) return showError('Password must be at least 6 characters');
+        
+            // Simple validation
+            if(email && password) {
+                // Show success message
+                const successMessage = document.querySelector('.success-message');
+                successMessage.style.display = 'flex';
                 
-                try {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                    showMessage('Account created successfully!');
-                    setTimeout(() => window.location.href = '/userprofile.html', 1000);
-                } catch (error) {
-                    showError(error.message.replace('Firebase: ', ''));
-                }
+                // Add redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'user profile.html'; // Redirect to profile
+                }, 2000);
             } else {
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    showMessage('Login successful!');
-                    setTimeout(() => window.location.href = '/userprofile.html', 1000);
-                } catch (error) {
-                    let errorMessage = 'An error occurred';
-                    switch (error.code) {
-                        case 'auth/invalid-login-credentials':
-                            errorMessage = 'Invalid email or password. Please check your credentials and try again.';
-                            break;
-                        case 'auth/user-not-found':
-                            errorMessage = 'No account found with this email. Please sign up first.';
-                            break;
-                        case 'auth/wrong-password':
-                            errorMessage = 'Incorrect password. Please try again.';
-                            break;
-                        case 'auth/email-already-in-use':
-                            errorMessage = 'This email is already registered. Please sign in instead.';
-                            break;
-                        case 'auth/weak-password':
-                            errorMessage = 'Password is too weak. Please use at least 6 characters.';
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage = 'Please enter a valid email address.';
-                            break;
-                        default:
-                            errorMessage = error.message.replace('Firebase: ', '');
-                    }
-                    showError(errorMessage);
-                }
+                // Show error message
+                document.querySelector('.error-message').style.display = 'block';
             }
         });
 
