@@ -358,7 +358,7 @@
             try {
                 const result = await signInWithPopup(auth, provider);
                 showMessage('Signed in successfully!');
-                setTimeout(() => window.location.href = '/form.html', 1000);
+                setTimeout(() => window.location.href = '/menu.html', 1000);
             } catch (error) {
                 showError(error.message.replace('Firebase: ', ''));
             }
@@ -380,7 +380,7 @@
                 
                 // Add redirect after 2 seconds
                 setTimeout(() => {
-                    window.location.href = 'form.html'; // Redirect to profile
+                    window.location.href = 'menu.html'; // Redirect to profile
                 }, 2000);
             } else {
                 // Show error message
